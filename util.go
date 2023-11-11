@@ -47,3 +47,14 @@ func SumInts(values []int) int {
 
 	return sum
 }
+
+// TODO: Generic function
+func BuildHistogram(slice []byte) map[byte]int {
+	hist := map[byte]int{}
+
+	for _, v := range slice {
+		hist[v] += 1
+	}
+
+	return hist
+}
