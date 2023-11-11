@@ -47,37 +47,40 @@ func parseInput9(input string) ([]RopeMove, error) {
 	}
 
 	return moves, nil
-
 }
 
 // Simulates the rope, and records number of positions visited.
-func simulateRope(moves []RopeMove) int {
-	head := Point{0, 0}
-	tail := Point{0, 0}
+func simulateRope(moves []RopeMove, numKnots int) int {
+	knots := make([]Point, numKnots)
 
-	tailPositions := map[Point]bool{tail: true}
+	tailPositions := map[Point]bool{knots[len(knots)-1]: true}
 	for _, move := range moves {
 		for i := 0; i < move.Amount; i++ {
-			// execute move
-			head = head.Add(move.Direction)
-			if ChebyshevDistance(head, tail) == 2 {
-				delta := head.Sub(tail)
-				// Normalize to a maximum of 1 movement
-				if delta.X > 1 {
-					delta.X = 1
-				} else if delta.X < -1 {
-					delta.X = -1
-				}
-				if delta.Y > 1 {
-					delta.Y = 1
-				} else if delta.Y < -1 {
-					delta.Y = -1
-				}
+			// Execute move
+			knots[0] = knots[0].Add(move.Direction)
+			// Follow the leader
+			for knot_idx := 1; knot_idx < len(knots); knot_idx++ {
+				if ChebyshevDistance(knots[knot_idx-1], knots[knot_idx]) == 2 {
+					delta := knots[knot_idx-1].Sub(knots[knot_idx])
+					// Normalize to a maximum of 1 movement
+					if delta.X > 1 {
+						delta.X = 1
+					} else if delta.X < -1 {
+						delta.X = -1
+					}
+					if delta.Y > 1 {
+						delta.Y = 1
+					} else if delta.Y < -1 {
+						delta.Y = -1
+					}
 
-				// Move and record new position
-				tail = tail.Add(Point{min(delta.X, 1), min(delta.Y, 1)})
-				tailPositions[tail] = true
+					// Execute the appropriate follow action
+					knots[knot_idx] = knots[knot_idx].Add(Point{delta.X, delta.Y})
+				}
 			}
+
+			// Record new tail position as visited
+			tailPositions[knots[len(knots)-1]] = true
 		}
 	}
 
@@ -88,9 +91,12 @@ func Day09A(input string) int {
 	moves, err := parseInput9(input)
 	CheckError(err)
 
-	return simulateRope(moves)
+	return simulateRope(moves, 2)
 }
 
 func Day09B(input string) int {
-	panic("Not implemented")
+	moves, err := parseInput9(input)
+	CheckError(err)
+
+	return simulateRope(moves, 10)
 }
