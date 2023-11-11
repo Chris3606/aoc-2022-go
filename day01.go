@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-func ParseInput(input string) ([]int, error) {
+func parseInput1(input string) ([]int, error) {
 	f, err := os.Open(input)
 	if err != nil {
 		return nil, err
@@ -27,14 +27,14 @@ func ParseInput(input string) ([]int, error) {
 }
 
 func Day01A(input string) int {
-	backpackSums, err := ParseInput(input)
+	backpackSums, err := parseInput1(input)
 	CheckError(err)
 
 	return slices.Max(backpackSums)
 }
 
 func Day01B(input string) int {
-	backpackSums, err := ParseInput(input)
+	backpackSums, err := parseInput1(input)
 	CheckError(err)
 
 	sort.Slice(backpackSums, func(i, j int) bool {

@@ -71,7 +71,7 @@ func scoreRounds(rounds []Round) int {
 	return totalScore
 }
 
-func parseInputA(input string) ([]Round, error) {
+func parseInput2A(input string) ([]Round, error) {
 	f, err := os.Open(input)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func parseInputA(input string) ([]Round, error) {
 	return rounds, nil
 }
 
-func parseInputB(input string) ([]Round, error) {
+func parseInput2B(input string) ([]Round, error) {
 	f, err := os.Open(input)
 	if err != nil {
 		return nil, err
@@ -157,14 +157,14 @@ func parseInputB(input string) ([]Round, error) {
 }
 
 func Day02A(input string) int {
-	rounds, err := parseInputA(input)
+	rounds, err := parseInput2A(input)
 	CheckError(err)
 
 	return scoreRounds(rounds)
 }
 
 func Day02B(input string) int {
-	rounds, err := parseInputB(input)
+	rounds, err := parseInput2B(input)
 	CheckError(err)
 
 	return scoreRounds(rounds)
