@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Don't push non-sample input data
+inputs/*.txt
+!inputs/*_sample.txt
