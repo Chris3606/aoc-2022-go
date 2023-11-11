@@ -117,8 +117,18 @@ func (grid *Grid[T]) Get(position Point) *T {
 	return &grid.Slice[position.ToIndex(grid.width)]
 }
 
+func (grid *Grid[T]) Set(position Point, value T) {
+	grid.Slice[position.ToIndex(grid.width)] = value
+}
+
 func (grid *Grid[T]) Positions() GridPositionsIterator[T] {
 	return GridPositionsIterator[T]{-1, grid}
+}
+
+func (grid *Grid[T]) Fill(value T) {
+	for i := range grid.Slice {
+		grid.Slice[i] = value
+	}
 }
 
 type GridPositionsIterator[T any] struct {
