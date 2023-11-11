@@ -3,6 +3,6 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Printf("Day 4A: %d\n", Day04A("inputs/day04.txt"))
-	fmt.Printf("Day 4B: %d\n", Day04B("inputs/day04.txt"))
+	fmt.Printf("Day 5A: %s\n", Day05A("inputs/day05.txt"))
+	fmt.Printf("Day 5B: %s\n", Day05B("inputs/day05.txt"))
 }
