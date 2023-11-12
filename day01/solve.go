@@ -5,6 +5,7 @@ import (
 	"os"
 	"slices"
 	"sort"
+	"strconv"
 )
 
 func parseInput(path string) ([]int, error) {
@@ -14,14 +15,14 @@ func parseInput(path string) ([]int, error) {
 	}
 	defer f.Close()
 
-	backpacks, err := utils.ReadIntGroups(f)
+	backpacks, err := utils.ReadGroups(f, strconv.Atoi)
 	if err != nil {
 		return nil, err
 	}
 
 	var sums []int
 	for _, backpack := range backpacks {
-		sums = append(sums, utils.SumInts(backpack))
+		sums = append(sums, utils.Sum(backpack))
 	}
 
 	return sums, nil
@@ -42,5 +43,5 @@ func PartB(path string) int {
 		return backpackSums[i] > backpackSums[j]
 	})
 
-	return utils.SumInts(backpackSums[0:3])
+	return utils.Sum(backpackSums[0:3])
 }
