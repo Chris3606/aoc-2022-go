@@ -1,6 +1,7 @@
-package main
+package day10
 
 import (
+	"aoc/utils"
 	"bufio"
 	"bytes"
 	"os"
@@ -65,8 +66,8 @@ func (cpu *CPU) Tick() int {
 	return reg
 }
 
-func parseInput10(input string) ([]Instruction, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]Instruction, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -100,9 +101,9 @@ func parseInput10(input string) ([]Instruction, error) {
 	return instructions, nil
 }
 
-func Day10A(input string) int {
-	instructions, err := parseInput10(input)
-	CheckError(err)
+func PartA(path string) int {
+	instructions, err := parseInput(path)
+	utils.CheckError(err)
 
 	cpu := NewCPU(instructions)
 
@@ -117,9 +118,9 @@ func Day10A(input string) int {
 	return sum
 }
 
-func Day10B(input string) string {
-	instructions, err := parseInput10(input)
-	CheckError(err)
+func PartB(path string) string {
+	instructions, err := parseInput(path)
+	utils.CheckError(err)
 
 	var crt bytes.Buffer
 

@@ -1,6 +1,7 @@
-package main
+package day03
 
 import (
+	"aoc/utils"
 	"bufio"
 	"os"
 )
@@ -15,8 +16,8 @@ func NewRucksack() Rucksack {
 	return Rucksack{map[byte]bool{}, map[byte]bool{}, map[byte]bool{}}
 }
 
-func parseInput3(input string) ([]Rucksack, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]Rucksack, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -73,9 +74,9 @@ func getPriority(item byte) int {
 	}
 }
 
-func Day03A(input string) int {
-	rucks, err := parseInput3(input)
-	CheckError(err)
+func PartA(path string) int {
+	rucks, err := parseInput(path)
+	utils.CheckError(err)
 
 	var sum int
 	for _, ruck := range rucks {
@@ -85,9 +86,9 @@ func Day03A(input string) int {
 	return sum
 }
 
-func Day03B(input string) int {
-	rucks, err := parseInput3(input)
-	CheckError(err)
+func PartB(path string) int {
+	rucks, err := parseInput(path)
+	utils.CheckError(err)
 
 	var sum int
 	for i := 0; i < len(rucks); i += 3 {

@@ -1,12 +1,13 @@
-package main
+package day06
 
 import (
+	"aoc/utils"
 	"io"
 	"os"
 )
 
-func parseInput6(input string) ([]byte, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]byte, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -17,7 +18,7 @@ func parseInput6(input string) ([]byte, error) {
 
 func findMarkerIndex(data []byte, markerSize int) int {
 	for i := 0; i <= len(data)-markerSize; i++ {
-		hist := BuildHistogram(data[i : i+markerSize])
+		hist := utils.BuildHistogram(data[i : i+markerSize])
 		if len(hist) == markerSize {
 			return i + markerSize
 		}
@@ -26,16 +27,16 @@ func findMarkerIndex(data []byte, markerSize int) int {
 	panic("No marker found.")
 }
 
-func Day06A(input string) int {
-	data, err := parseInput6(input)
-	CheckError(err)
+func PartA(path string) int {
+	data, err := parseInput(path)
+	utils.CheckError(err)
 
 	return findMarkerIndex(data, 4)
 }
 
-func Day06B(input string) int {
-	data, err := parseInput6(input)
-	CheckError(err)
+func PartB(path string) int {
+	data, err := parseInput(path)
+	utils.CheckError(err)
 
 	return findMarkerIndex(data, 14)
 }

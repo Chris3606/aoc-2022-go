@@ -1,6 +1,7 @@
-package main
+package day02
 
 import (
+	"aoc/utils"
 	"bufio"
 	"os"
 )
@@ -71,8 +72,8 @@ func scoreRounds(rounds []Round) int {
 	return totalScore
 }
 
-func parseInput2A(input string) ([]Round, error) {
-	f, err := os.Open(input)
+func parseInputA(path string) ([]Round, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -109,8 +110,8 @@ func parseInput2A(input string) ([]Round, error) {
 	return rounds, nil
 }
 
-func parseInput2B(input string) ([]Round, error) {
-	f, err := os.Open(input)
+func parseInputB(path string) ([]Round, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -156,16 +157,16 @@ func parseInput2B(input string) ([]Round, error) {
 	return rounds, nil
 }
 
-func Day02A(input string) int {
-	rounds, err := parseInput2A(input)
-	CheckError(err)
+func PartA(path string) int {
+	rounds, err := parseInputA(path)
+	utils.CheckError(err)
 
 	return scoreRounds(rounds)
 }
 
-func Day02B(input string) int {
-	rounds, err := parseInput2B(input)
-	CheckError(err)
+func PartB(path string) int {
+	rounds, err := parseInputB(path)
+	utils.CheckError(err)
 
 	return scoreRounds(rounds)
 }

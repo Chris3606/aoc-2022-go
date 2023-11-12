@@ -1,12 +1,14 @@
-package main
+package day04
 
 import (
+	"aoc/utils"
 	"bufio"
 	"os"
 	"strconv"
 	"strings"
 )
 
+// TODO: Move to helpers
 type Range struct {
 	Start int
 	End   int
@@ -41,8 +43,8 @@ type ElfPair struct {
 	range2 Range
 }
 
-func parseInput4(input string) ([]ElfPair, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]ElfPair, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -69,9 +71,9 @@ func parseInput4(input string) ([]ElfPair, error) {
 	return pairs, nil
 }
 
-func Day04A(input string) int {
-	pairs, err := parseInput4(input)
-	CheckError(err)
+func PartA(path string) int {
+	pairs, err := parseInput(path)
+	utils.CheckError(err)
 
 	var pairsWithSubset int
 	for _, pair := range pairs {
@@ -83,9 +85,9 @@ func Day04A(input string) int {
 	return pairsWithSubset
 }
 
-func Day04B(input string) int {
-	pairs, err := parseInput4(input)
-	CheckError(err)
+func PartB(path string) int {
+	pairs, err := parseInput(path)
+	utils.CheckError(err)
 
 	var overlappingPairs int
 	for _, pair := range pairs {

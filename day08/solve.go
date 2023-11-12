@@ -1,21 +1,22 @@
-package main
+package day08
 
 import (
+	"aoc/utils"
 	"os"
 )
 
-func parseInput8(input string) (Grid[byte], error) {
-	f, err := os.Open(input)
+func parseInput(path string) (utils.Grid[byte], error) {
+	f, err := os.Open(path)
 	if err != nil {
-		return Grid[byte]{}, err
+		return utils.Grid[byte]{}, err
 	}
 	defer f.Close()
 
-	return ReadDigitGrid(f)
+	return utils.ReadDigitGrid(f)
 }
 
-func setVisibility(x, y int, grid *Grid[byte], visible *map[Point]bool, maxHeight *int) bool {
-	point := Point{x, y}
+func setVisibility(x, y int, grid *utils.Grid[byte], visible *map[utils.Point]bool, maxHeight *int) bool {
+	point := utils.Point{X: x, Y: y}
 	val := grid.GetCopy(point)
 	if int(val) > *maxHeight {
 		(*visible)[point] = true
@@ -27,14 +28,14 @@ func setVisibility(x, y int, grid *Grid[byte], visible *map[Point]bool, maxHeigh
 	return val == 9
 }
 
-func calculateScenicScore(point Point, grid *Grid[byte]) int {
+func calculateScenicScore(point utils.Point, grid *utils.Grid[byte]) int {
 	score := 1
 	val := grid.GetCopy(point)
 
 	directionScore := 0
 	for y := point.Y + 1; y < grid.Height(); y++ {
 		directionScore++
-		if grid.GetCopy(Point{point.X, y}) >= val {
+		if grid.GetCopy(utils.Point{X: point.X, Y: y}) >= val {
 			break
 		}
 	}
@@ -43,7 +44,7 @@ func calculateScenicScore(point Point, grid *Grid[byte]) int {
 	directionScore = 0
 	for y := point.Y - 1; y >= 0; y-- {
 		directionScore++
-		if grid.GetCopy(Point{point.X, y}) >= val {
+		if grid.GetCopy(utils.Point{X: point.X, Y: y}) >= val {
 			break
 		}
 	}
@@ -52,7 +53,7 @@ func calculateScenicScore(point Point, grid *Grid[byte]) int {
 	directionScore = 0
 	for x := point.X + 1; x < grid.Width(); x++ {
 		directionScore++
-		if grid.GetCopy(Point{x, point.Y}) >= val {
+		if grid.GetCopy(utils.Point{X: x, Y: point.Y}) >= val {
 			break
 		}
 	}
@@ -61,7 +62,7 @@ func calculateScenicScore(point Point, grid *Grid[byte]) int {
 	directionScore = 0
 	for x := point.X - 1; x >= 0; x-- {
 		directionScore++
-		if grid.GetCopy(Point{x, point.Y}) >= val {
+		if grid.GetCopy(utils.Point{X: x, Y: point.Y}) >= val {
 			break
 		}
 	}
@@ -70,12 +71,12 @@ func calculateScenicScore(point Point, grid *Grid[byte]) int {
 	return score
 }
 
-func Day08A(input string) int {
-	grid, err := parseInput8(input)
-	CheckError(err)
+func PartA(path string) int {
+	grid, err := parseInput(path)
+	utils.CheckError(err)
 
 	// We'll record visible things in a map as we go
-	visible := map[Point]bool{}
+	visible := map[utils.Point]bool{}
 
 	// Check all columns going down and up to set visibility
 	for x := 0; x < grid.Width(); x++ {
@@ -106,9 +107,9 @@ func Day08A(input string) int {
 	return len(visible)
 }
 
-func Day08B(input string) int {
-	grid, err := parseInput8(input)
-	CheckError(err)
+func PartB(path string) int {
+	grid, err := parseInput(path)
+	utils.CheckError(err)
 
 	positions := grid.Positions()
 

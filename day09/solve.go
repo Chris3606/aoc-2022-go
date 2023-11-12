@@ -1,18 +1,19 @@
-package main
+package day09
 
 import (
+	"aoc/utils"
 	"bufio"
 	"os"
 	"strconv"
 )
 
 type RopeMove struct {
-	Direction Point
+	Direction utils.Point
 	Amount    int
 }
 
-func parseInput9(input string) ([]RopeMove, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]RopeMove, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
@@ -25,16 +26,16 @@ func parseInput9(input string) ([]RopeMove, error) {
 	for scanner.Scan() {
 		text := scanner.Text()
 
-		var dir Point
+		var dir utils.Point
 		switch text[0] {
 		case 'U':
-			dir = UP
+			dir = utils.UP
 		case 'D':
-			dir = DOWN
+			dir = utils.DOWN
 		case 'L':
-			dir = LEFT
+			dir = utils.LEFT
 		case 'R':
-			dir = RIGHT
+			dir = utils.RIGHT
 		default:
 			panic("Invalid movement direction")
 		}
@@ -51,16 +52,16 @@ func parseInput9(input string) ([]RopeMove, error) {
 
 // Simulates the rope, and records number of positions visited.
 func simulateRope(moves []RopeMove, numKnots int) int {
-	knots := make([]Point, numKnots)
+	knots := make([]utils.Point, numKnots)
 
-	tailPositions := map[Point]bool{knots[len(knots)-1]: true}
+	tailPositions := map[utils.Point]bool{knots[len(knots)-1]: true}
 	for _, move := range moves {
 		for i := 0; i < move.Amount; i++ {
 			// Execute move
 			knots[0] = knots[0].Add(move.Direction)
 			// Follow the leader
 			for knot_idx := 1; knot_idx < len(knots); knot_idx++ {
-				if ChebyshevDistance(knots[knot_idx-1], knots[knot_idx]) == 2 {
+				if utils.ChebyshevDistance(knots[knot_idx-1], knots[knot_idx]) == 2 {
 					delta := knots[knot_idx-1].Sub(knots[knot_idx])
 					// Normalize to a maximum of 1 movement
 					if delta.X > 1 {
@@ -75,7 +76,7 @@ func simulateRope(moves []RopeMove, numKnots int) int {
 					}
 
 					// Execute the appropriate follow action
-					knots[knot_idx] = knots[knot_idx].Add(Point{delta.X, delta.Y})
+					knots[knot_idx] = knots[knot_idx].Add(delta)
 				}
 			}
 
@@ -87,16 +88,16 @@ func simulateRope(moves []RopeMove, numKnots int) int {
 	return len(tailPositions)
 }
 
-func Day09A(input string) int {
-	moves, err := parseInput9(input)
-	CheckError(err)
+func PartA(path string) int {
+	moves, err := parseInput(path)
+	utils.CheckError(err)
 
 	return simulateRope(moves, 2)
 }
 
-func Day09B(input string) int {
-	moves, err := parseInput9(input)
-	CheckError(err)
+func PartB(path string) int {
+	moves, err := parseInput(path)
+	utils.CheckError(err)
 
 	return simulateRope(moves, 10)
 }

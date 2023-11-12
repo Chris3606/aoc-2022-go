@@ -1,6 +1,7 @@
 package main
 
 import (
+	"aoc/utils"
 	"bufio"
 	"os"
 )
@@ -24,7 +25,7 @@ func parseInputX(input string) ([]int, error) {
 
 func Day0XA(input string) int {
 	_, err := parseInputX(input)
-	CheckError(err)
+	utils.CheckError(err)
 	panic("Not implemented")
 }
 

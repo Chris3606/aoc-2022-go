@@ -1,6 +1,7 @@
-package main
+package day07
 
 import (
+	"aoc/utils"
 	"bufio"
 	"math"
 	"os"
@@ -76,8 +77,8 @@ func GetDirectories(root *Dir) []*Dir {
 	return dirs
 }
 
-func parseInput7(input string) (Dir, error) {
-	f, err := os.Open(input)
+func parseInput(path string) (Dir, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return Dir{}, err
 	}
@@ -127,9 +128,9 @@ func parseInput7(input string) (Dir, error) {
 	return root, nil
 }
 
-func Day07A(input string) int {
-	fsRoot, err := parseInput7(input)
-	CheckError(err)
+func PartA(path string) int {
+	fsRoot, err := parseInput(path)
+	utils.CheckError(err)
 
 	dirs := GetDirectories(&fsRoot)
 
@@ -144,12 +145,12 @@ func Day07A(input string) int {
 	return sum
 }
 
-func Day07B(input string) int {
+func PartB(path string) int {
 	const totalSpace = 70000000
 	const requiredFreeSpace = 30000000
 
-	fsRoot, err := parseInput7(input)
-	CheckError(err)
+	fsRoot, err := parseInput(path)
+	utils.CheckError(err)
 
 	currentFreeSpace := totalSpace - fsRoot.getSize()
 	additionalSpaceNeeded := requiredFreeSpace - currentFreeSpace

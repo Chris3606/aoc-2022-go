@@ -1,6 +1,7 @@
-package main
+package day05
 
 import (
+	"aoc/utils"
 	"bufio"
 	"bytes"
 	"fmt"
@@ -15,8 +16,8 @@ type StackMove struct {
 
 type Stack []byte
 
-func parseInput5(input string) ([]Stack, []StackMove, error) {
-	f, err := os.Open(input)
+func parseInput(path string) ([]Stack, []StackMove, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -109,9 +110,9 @@ func getMessage(stacks []Stack) string {
 	return buff.String()
 }
 
-func Day05A(input string) string {
-	stacks, moves, err := parseInput5(input)
-	CheckError(err)
+func PartA(path string) string {
+	stacks, moves, err := parseInput(path)
+	utils.CheckError(err)
 
 	for _, move := range moves {
 		executeStackMove9000(stacks, move)
@@ -120,9 +121,9 @@ func Day05A(input string) string {
 	return getMessage(stacks)
 }
 
-func Day05B(input string) string {
-	stacks, moves, err := parseInput5(input)
-	CheckError(err)
+func PartB(path string) string {
+	stacks, moves, err := parseInput(path)
+	utils.CheckError(err)
 
 	for _, move := range moves {
 		executeStackMove9001(stacks, move)

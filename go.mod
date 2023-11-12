@@ -1,3 +1,3 @@
-module github.com/Chris3606/aoc-2022-go
+module aoc
 
 go 1.21.4
