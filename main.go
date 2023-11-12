@@ -12,6 +12,20 @@ import (
 	"aoc/day09"
 	"aoc/day10"
 	"aoc/day11"
+	"aoc/day12"
+	"aoc/day13"
+	"aoc/day14"
+	"aoc/day15"
+	"aoc/day16"
+	"aoc/day17"
+	"aoc/day18"
+	"aoc/day19"
+	"aoc/day20"
+	"aoc/day21"
+	"aoc/day22"
+	"aoc/day23"
+	"aoc/day24"
+	"aoc/day25"
 	"aoc/utils"
 	"fmt"
 	"os"
@@ -60,34 +74,34 @@ func runCode(day int, sample bool) {
 		printResult(day, sample, day10.PartA(file), day10.PartB(file))
 	case 11:
 		printResult(day, sample, day11.PartA(file), day11.PartB(file))
-	// case 12:
-	// 	printResult(day, sample, Day12A(file), Day12B(file))
-	// case 13:
-	// 	printResult(day, sample, Day13A(file), Day13B(file))
-	// case 14:
-	// 	printResult(day, sample, Day14A(file), Day14B(file))
-	// case 15:
-	// 	printResult(day, sample, Day15A(file), Day15B(file))
-	// case 16:
-	// 	printResult(day, sample, Day16A(file), Day16B(file))
-	// case 17:
-	// 	printResult(day, sample, Day17A(file), Day17B(file))
-	// case 18:
-	// 	printResult(day, sample, Day18A(file), Day18B(file))
-	// case 19:
-	// 	printResult(day, sample, Day19A(file), Day19B(file))
-	// case 20:
-	// 	printResult(day, sample, Day20A(file), Day20B(file))
-	// case 21:
-	// 	printResult(day, sample, Day21A(file), Day21B(file))
-	// case 22:
-	// 	printResult(day, sample, Day22A(file), Day22B(file))
-	// case 23:
-	// 	printResult(day, sample, Day23A(file), Day23B(file))
-	// case 24:
-	// 	printResult(day, sample, Day24A(file), Day24B(file))
-	// case 25:
-	// 	printResult(day, sample, Day25A(file), Day25B(file))
+	case 12:
+		printResult(day, sample, day12.PartA(file), day12.PartB(file))
+	case 13:
+		printResult(day, sample, day13.PartA(file), day13.PartB(file))
+	case 14:
+		printResult(day, sample, day14.PartA(file), day14.PartB(file))
+	case 15:
+		printResult(day, sample, day15.PartA(file), day15.PartB(file))
+	case 16:
+		printResult(day, sample, day16.PartA(file), day16.PartB(file))
+	case 17:
+		printResult(day, sample, day17.PartA(file), day17.PartB(file))
+	case 18:
+		printResult(day, sample, day18.PartA(file), day18.PartB(file))
+	case 19:
+		printResult(day, sample, day19.PartA(file), day19.PartB(file))
+	case 20:
+		printResult(day, sample, day20.PartA(file), day20.PartB(file))
+	case 21:
+		printResult(day, sample, day21.PartA(file), day21.PartB(file))
+	case 22:
+		printResult(day, sample, day22.PartA(file), day22.PartB(file))
+	case 23:
+		printResult(day, sample, day23.PartA(file), day23.PartB(file))
+	case 24:
+		printResult(day, sample, day24.PartA(file), day24.PartB(file))
+	case 25:
+		printResult(day, sample, day25.PartA(file), day25.PartB(file))
 	default:
 		panic("Unsupported day parameter.")
 	}
@@ -110,12 +124,4 @@ func main() {
 	}
 
 	runCode(day, sample)
-
-	// switch day {
-	// case 1:
-	// 	fmt.Printf("Day %dA: %d\n", day, Day10A("inputs/day10.txt"))
-	// 	fmt.Printf("Day %dB:\n%s\n", day, Day10B("inputs/day10.txt"))
-	// }
-	// fmt.Printf("Day 10A: %d\n", Day10A("inputs/day10.txt"))
-	// fmt.Printf("Day 10B:\n%s\n", Day10B("inputs/day10.txt"))
 }
