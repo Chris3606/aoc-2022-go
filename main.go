@@ -26,10 +26,8 @@ import (
 	"aoc/day23"
 	"aoc/day24"
 	"aoc/day25"
-	"aoc/utils"
+	"flag"
 	"fmt"
-	"os"
-	"strconv"
 )
 
 func printResult[T1 any, T2 any](day int, sample bool, partA T1, partB T2) {
@@ -108,20 +106,10 @@ func runCode(day int, sample bool) {
 }
 
 func main() {
-	//dayPtr := flag.Int("n", 1, "The day to run.")
-	//samplePtr := flag.Bool("s", false, "When set, runs with the sample input instead of the real input.")
+	dayPtr := flag.Int("n", 1, "The day to run.")
+	samplePtr := flag.Bool("s", false, "When set, runs with the sample input instead of the real input.")
 
-	args := os.Args[1:]
-	if len(args) == 0 {
-		panic("Invalid usage: exe DAY_NUM [--sample | -s].")
-	}
-	day, err := strconv.Atoi(args[0])
-	utils.CheckError(err)
+	flag.Parse()
 
-	sample := false
-	if len(args) > 1 && (args[1] == "--sample" || args[1] == "-s") {
-		sample = true
-	}
-
-	runCode(day, sample)
+	runCode(*dayPtr, *samplePtr)
 }
