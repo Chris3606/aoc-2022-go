@@ -71,3 +71,24 @@ func Abs(v1 int) int {
 func ChebyshevDistance(p1 Point, p2 Point) int {
 	return max(Abs(p2.X-p1.X), Abs(p2.Y-p1.Y))
 }
+
+// Greatest common divisor (GCD) via Euclidean algorithm
+func GCD(a, b int) int {
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a
+}
+
+// Find Least Common Multiple (LCM) via GCD
+func LCM(a, b int, integers ...int) int {
+	result := a * b / GCD(a, b)
+
+	for i := 0; i < len(integers); i++ {
+		result = LCM(result, integers[i])
+	}
+
+	return result
+}

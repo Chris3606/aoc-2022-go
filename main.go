@@ -106,7 +106,7 @@ func runCode(day int, sample bool) {
 }
 
 func main() {
-	dayPtr := flag.Int("n", 1, "The day to run.")
+	dayPtr := flag.Int("d", 1, "The day to run.")
 	samplePtr := flag.Bool("s", false, "When set, runs with the sample input instead of the real input.")
 
 	flag.Parse()
