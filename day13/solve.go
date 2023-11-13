@@ -4,6 +4,7 @@ import (
 	"aoc/utils"
 	"bufio"
 	"os"
+	"slices"
 	"strconv"
 )
 
@@ -193,9 +194,31 @@ func PartA(path string) int {
 	return sum
 }
 
-func PartB(path string) string {
-	_, err := parseInput(path)
+func PartB(path string) int {
+	pairs, err := parseInput(path)
 	utils.CheckError(err)
 
-	return "Not implemented"
+	// Flatten list
+	var packets []Packet
+	for _, p := range pairs {
+		packets = append(packets, p.P1, p.P2)
+	}
+
+	// Add divider packets
+	d1 := Packet{Element{Tag: SubPacket, SubPacket: Packet{Element{Tag: Value, Val: 2}}}}
+	d2 := Packet{Element{Tag: SubPacket, SubPacket: Packet{Element{Tag: Value, Val: 6}}}}
+	packets = append(packets, d1, d2)
+
+	// Sort
+	slices.SortFunc(packets, comparePackets)
+
+	// Find decoder key via the location of divider packets
+	decoderKey := 1
+	for i, p := range packets {
+		if comparePackets(p, d1) == 0 || comparePackets(p, d2) == 0 {
+			decoderKey *= (i + 1)
+		}
+	}
+
+	return decoderKey
 }
