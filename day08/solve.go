@@ -12,7 +12,9 @@ func parseInput(path string) (utils.Grid[byte], error) {
 	}
 	defer f.Close()
 
-	return utils.ReadDigitGrid(f)
+	return utils.ReadGridFromBytes(f, func(v byte, _ utils.Point) (byte, error) {
+		return v - '0', nil
+	})
 }
 
 func setVisibility(x, y int, grid *utils.Grid[byte], visible *map[utils.Point]bool, maxHeight *int) bool {

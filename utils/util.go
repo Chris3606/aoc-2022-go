@@ -44,6 +44,8 @@ var RIGHT = Point{1, 0}
 var DOWN = Point{0, 1}
 var LEFT = Point{-1, 0}
 
+var CARDINAL_DIRS_CLOCKWISE = []Point{UP, RIGHT, DOWN, LEFT}
+
 func FromIndex(index, width int) Point {
 	return Point{index % width, index / width}
 }
@@ -68,8 +70,12 @@ func Abs(v1 int) int {
 	return v1
 }
 
-func ChebyshevDistance(p1 Point, p2 Point) int {
+func ChebyshevDistance(p1, p2 Point) int {
 	return max(Abs(p2.X-p1.X), Abs(p2.Y-p1.Y))
+}
+
+func ManhattanDistance(p1, p2 Point) int {
+	return Abs(p2.X-p1.X) + Abs(p2.Y+p1.Y)
 }
 
 // Greatest common divisor (GCD) via Euclidean algorithm
