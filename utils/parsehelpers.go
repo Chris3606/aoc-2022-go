@@ -3,7 +3,9 @@ package utils
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"io"
+	"strconv"
 )
 
 func ReadGroups[T any](r io.Reader, parser func(string) (T, error)) ([][]T, error) {
@@ -66,6 +68,32 @@ func ReadGridFromBytes[T any](r io.Reader, parser func(byte, Point) (T, error)) 
 	}
 
 	return GridFromSlice[T](slice, width), nil
+}
+
+// Reads points in form 1,2
+func ReadPoint(r io.Reader) (Point, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(ScanDelimiterFunc(","))
+
+	b := scanner.Scan()
+	if !b {
+		return Point{}, errors.New("invalid point format: X coordinate not found")
+	}
+	x, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		return Point{}, err
+	}
+
+	b = scanner.Scan()
+	if !b {
+		return Point{}, errors.New("invalid point format: Y coordinate not found")
+	}
+	y, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		return Point{}, err
+	}
+
+	return Point{x, y}, nil
 }
 
 func ScanDelimiterFunc(separator string) func(data []byte, atEOF bool) (advance int, token []byte, err error) {

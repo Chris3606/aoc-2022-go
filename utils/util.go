@@ -40,9 +40,13 @@ type Point struct {
 
 // Directions
 var UP = Point{0, -1}
+var UP_RIGHT = Point{1, -1}
 var RIGHT = Point{1, 0}
+var DOWN_RIGHT = Point{1, 1}
 var DOWN = Point{0, 1}
+var DOWN_LEFT = Point{-1, 1}
 var LEFT = Point{-1, 0}
+var UP_LEFT = Point{-1, -1}
 
 var CARDINAL_DIRS_CLOCKWISE = []Point{UP, RIGHT, DOWN, LEFT}
 
