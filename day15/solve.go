@@ -12,6 +12,7 @@ type Sensor struct {
 	NearestBeacon utils.Point
 }
 
+// TODO: Move to utils
 type RangeSet struct {
 	ranges []utils.Range
 }
@@ -61,20 +62,7 @@ func parseInput(path string) ([]Sensor, error) {
 	return sensors, nil
 }
 
-func PartA(path string) int {
-	sensors, err := parseInput(path)
-	utils.CheckError(err)
-
-	// Unique hash set of beacons (some are duplicates)
-	beacons := map[utils.Point]bool{}
-	for _, sensor := range sensors {
-		beacons[sensor.NearestBeacon] = true
-	}
-
-	//const targetY = 10 // Sample
-	const targetY = 2000000 // Production
-
-	var rangeSet RangeSet
+func getImpossiblePositionsForRow(set *RangeSet, sensors []Sensor, beaconSet map[utils.Point]bool, row int) {
 	for _, sensor := range sensors {
 		// Calculate how far center is from its nearest beacon
 		distanceToBeacon := utils.ManhattanDistance(sensor.Position, sensor.NearestBeacon)
@@ -82,7 +70,7 @@ func PartA(path string) int {
 		// Calculate how far it is to get to the row we're searching from the sensor (at minimum).
 		// If it's farther than the distance from the sensor, then the "radius" around the beacon can't
 		// extend to the target row so we can skip this sensor
-		verticalDistance := utils.Abs(sensor.Position.Y - targetY)
+		verticalDistance := utils.Abs(sensor.Position.Y - row)
 		if verticalDistance > distanceToBeacon {
 			continue
 		}
@@ -97,10 +85,27 @@ func PartA(path string) int {
 			Start: sensor.Position.X - horizontalDistance,
 			End:   sensor.Position.X + horizontalDistance,
 		}
-		rangeSet.insert(rangeInRadius)
+		set.insert(rangeInRadius)
+	}
+}
+
+func PartA(path string) int {
+	sensors, err := parseInput(path)
+	utils.CheckError(err)
+
+	// Unique hash set of beacons (some are duplicates)
+	beacons := map[utils.Point]bool{}
+	for _, sensor := range sensors {
+		beacons[sensor.NearestBeacon] = true
 	}
 
-	// Figure out how many positions are in the range set,
+	//const targetY = 10 // Sample
+	const targetY = 2000000 // Production
+
+	var rangeSet RangeSet
+	getImpossiblePositionsForRow(&rangeSet, sensors, beacons, targetY)
+
+	// Figure out how many positions are in the range set
 	sum := 0
 	for _, r := range rangeSet.ranges {
 		sum += (r.End - r.Start + 1)
@@ -116,9 +121,53 @@ func PartA(path string) int {
 	return sum
 }
 
-func PartB(path string) string {
-	_, err := parseInput(path)
+func PartB(path string) int {
+	//const max_coord = 20 // Sample
+	const max_coord = 4000000 // Production
+
+	sensors, err := parseInput(path)
 	utils.CheckError(err)
 
-	return "Not implemented"
+	// Unique hash set of beacons (some are duplicates)
+	beacons := map[utils.Point]bool{}
+	for _, sensor := range sensors {
+		beacons[sensor.NearestBeacon] = true
+	}
+
+	var set RangeSet
+	for y := 0; y <= max_coord; y++ {
+		set.ranges = set.ranges[:0]
+
+		// Get impossible positions for current row
+		getImpossiblePositionsForRow(&set, sensors, beacons, y)
+
+		// Find gap in the impossible positions within the coord bounds; this, by definition,
+		// is a possible position
+		x := 0
+		for x = 0; x <= max_coord; x++ {
+			foundRange := false
+			for _, r := range set.ranges {
+				if r.ContainsNum(x) { // Gap has to be after the current range
+					x = r.End
+					foundRange = true
+					break
+
+					//break
+				}
+			}
+
+			if !foundRange {
+				return x*4000000 + y
+			}
+
+			//if foundRange {
+			//	continue
+			//}
+		}
+		// if x <= max_coord {
+		// 	return x*4000000 + y
+		// }
+	}
+
+	return -1
 }
