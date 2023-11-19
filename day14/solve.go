@@ -87,41 +87,6 @@ func FindRestingPointForSandGrain(objects map[utils.Point]bool, floorY int, entr
 	return cur, true // Came to rest on floor
 }
 
-// func FindRestingPointForSandGrain(objects map[utils.Point]bool, maxY int, entryPoint utils.Point) (utils.Point, bool) {
-
-// 	// Fall until we hit something or know we're below the floor
-// 	cur := entryPoint
-// 	for {
-// 		// Sand will fall into infinity since there's nothing left below it to block it
-// 		if cur.Y > maxY {
-// 			break
-// 		}
-
-// 		// Check neighbors in proper order
-// 		n := cur.Add(utils.DOWN)
-// 		if !objects[n] {
-// 			cur = n
-// 			continue
-// 		}
-
-// 		n = cur.Add(utils.DOWN_LEFT)
-// 		if !objects[n] {
-// 			cur = n
-// 			continue
-// 		}
-
-// 		n = cur.Add(utils.DOWN_RIGHT)
-// 		if !objects[n] {
-// 			cur = n
-// 			continue
-// 		}
-
-// 		// The grain can't move anywhere, so we found final point for sand grain
-// 		return cur, true
-// 	}
-// 	return utils.Point{}, false // No resting point
-// }
-
 func PartA(path string) int {
 	objects, err := parseInput(path)
 	utils.CheckError(err)
