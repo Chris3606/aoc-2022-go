@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"errors"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -74,12 +76,16 @@ func Abs(v1 int) int {
 	return v1
 }
 
+// Calculates chebyshev distance (aka distance where the distance between a cell and all 8 of a cells
+// neighbors is 1)
 func ChebyshevDistance(p1, p2 Point) int {
 	return max(Abs(p2.X-p1.X), Abs(p2.Y-p1.Y))
 }
 
+// Calculates manhattan distance; aka distance where only the neighbors in 4 cardinal directions are
+// adjacent.
 func ManhattanDistance(p1, p2 Point) int {
-	return Abs(p2.X-p1.X) + Abs(p2.Y+p1.Y)
+	return Abs(p2.X-p1.X) + Abs(p2.Y-p1.Y)
 }
 
 // Greatest common divisor (GCD) via Euclidean algorithm
@@ -101,4 +107,37 @@ func LCM(a, b int, integers ...int) int {
 	}
 
 	return result
+}
+
+// Represents a range of numbers (both ends are inclusive)
+type Range struct {
+	Start int
+	End   int
+}
+
+// Returns whether or not r1 contains r2 entirely.
+func (r1 Range) Contains(r2 Range) bool {
+	return r1.Start <= r2.Start && r1.End >= r2.End
+}
+
+// Returns whether or not r1 and r2 overlap.
+func (r1 Range) Overlaps(r2 Range) bool {
+	return r1.Start <= r2.End && r2.Start <= r1.End
+}
+
+// Joins 2 overlapping ranges
+func (r1 Range) JoinWith(r2 Range) (Range, error) {
+	if !r1.Overlaps(r2) {
+		return Range{}, errors.New("you cannot join non-overlapping ranges")
+	}
+
+	return Range{min(r1.Start, r2.Start), max(r1.End, r2.End)}, nil
+}
+
+// Removes the item from a slice in O(1) time, without guaranteeing preservation of order
+func RemoveUnordered[T any](slice []T, idx int) []T {
+	lastIdx := len(slice) - 1
+	slice[idx] = slice[lastIdx]
+
+	return slice[:lastIdx]
 }

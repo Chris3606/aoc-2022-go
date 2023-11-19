@@ -8,39 +8,25 @@ import (
 	"strings"
 )
 
-// TODO: Move to helpers
-type Range struct {
-	Start int
-	End   int
-}
-
-func RangeFromStr(str string) (Range, error) {
+func RangeFromStr(str string) (utils.Range, error) {
 	elems := strings.Split(str, "-")
 
 	start, err := strconv.Atoi(elems[0])
 	if err != nil {
-		return Range{}, err
+		return utils.Range{}, err
 	}
 
 	end, err := strconv.Atoi(elems[1])
 	if err != nil {
-		return Range{}, err
+		return utils.Range{}, err
 	}
 
-	return Range{start, end}, nil
-}
-
-func (r1 Range) Contains(r2 Range) bool {
-	return r1.Start <= r2.Start && r1.End >= r2.End
-}
-
-func (r1 Range) Overlaps(r2 Range) bool {
-	return r1.Start <= r2.End && r2.Start <= r1.End
+	return utils.Range{Start: start, End: end}, nil
 }
 
 type ElfPair struct {
-	range1 Range
-	range2 Range
+	range1 utils.Range
+	range2 utils.Range
 }
 
 func parseInput(path string) ([]ElfPair, error) {
