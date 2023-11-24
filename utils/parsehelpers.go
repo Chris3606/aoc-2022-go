@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"strconv"
+	"strings"
 )
 
 func ReadGroups[T any](r io.Reader, parser func(string) (T, error)) ([][]T, error) {
@@ -96,6 +97,41 @@ func ReadPoint(r io.Reader) (Point, error) {
 	return Point{x, y}, nil
 }
 
+// Reads 3D points in form 1,2,3
+func ReadPoint3d(input string) (Point3d, error) {
+	scanner := bufio.NewScanner(strings.NewReader(input))
+	scanner.Split(ScanDelimiterFunc(","))
+
+	b := scanner.Scan()
+	if !b {
+		return Point3d{}, errors.New("invalid point format: X coordinate not found")
+	}
+	x, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		return Point3d{}, err
+	}
+
+	b = scanner.Scan()
+	if !b {
+		return Point3d{}, errors.New("invalid point format: Y coordinate not found")
+	}
+	y, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		return Point3d{}, err
+	}
+
+	b = scanner.Scan()
+	if !b {
+		return Point3d{}, errors.New("invalid point format: Z coordinate not found")
+	}
+	z, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		return Point3d{}, err
+	}
+
+	return Point3d{x, y, z}, nil
+}
+
 func ScanDelimiterFunc(separator string) func(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	searchBytes := []byte(separator)
 	searchLen := len(searchBytes)
@@ -120,6 +156,22 @@ func ScanDelimiterFunc(separator string) func(data []byte, atEOF bool) (advance 
 		// Request more data.
 		return 0, nil, nil
 	}
+}
+
+// Reads in a list of items by parsing the string representation of the scanner.Scan() function
+// until Scan returns false.
+func ReadItemsScan[T any](scanner *bufio.Scanner, parser func(string) (T, error)) ([]T, error) {
+	var results []T
+	for scanner.Scan() {
+		val, err := parser(scanner.Text())
+		if err != nil {
+			return nil, err
+		}
+
+		results = append(results, val)
+	}
+
+	return results, nil
 }
 
 // Reads in a list of items separated by the given separator

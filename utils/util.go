@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"math"
 
 	"golang.org/x/exp/constraints"
 )
@@ -145,4 +146,65 @@ func RemoveUnordered[T any](slice []T, idx int) []T {
 	slice[idx] = slice[lastIdx]
 
 	return slice[:lastIdx]
+}
+
+type Point3d struct {
+	X int
+	Y int
+	Z int
+}
+
+func (p1 Point3d) Add(p2 Point3d) Point3d {
+	return Point3d{p1.X + p2.X, p1.Y + p2.Y, p1.Z + p2.Z}
+}
+
+func (p1 Point3d) Sub(p2 Point3d) Point3d {
+	return Point3d{p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z}
+}
+
+// 3d directions
+var UP_3D = Point3d{0, -1, 0}
+var RIGHT_3D = Point3d{1, 0, 0}
+var DOWN_3D = Point3d{0, 1, 0}
+var LEFT_3D = Point3d{-1, 0, 0}
+var FORWARD_3D = Point3d{0, 0, 1}
+var BACK_3D = Point3d{0, 0, -1}
+
+var DIRS_3D = []Point3d{UP_3D, RIGHT_3D, DOWN_3D, LEFT_3D, FORWARD_3D, BACK_3D}
+
+type Cube struct {
+	MinExtent Point3d
+	MaxExtent Point3d
+}
+
+// Returns whether or not the position given is contained within the cube.
+func (cube Cube) Contains(point Point3d) bool {
+	return point.X >= cube.MinExtent.X && point.X <= cube.MaxExtent.X &&
+		point.Y >= cube.MinExtent.Y && point.Y <= cube.MaxExtent.Y &&
+		point.Z >= cube.MinExtent.Z && point.Z <= cube.MaxExtent.Z
+}
+
+// Returns whether or not the position given is on the outer edge of the cube.
+func (cube Cube) IsPerimeterPosition(point Point3d) bool {
+	return cube.Contains(point) &&
+		point.X == cube.MinExtent.X || point.X == cube.MaxExtent.X ||
+		point.Y == cube.MinExtent.Y || point.Y == cube.MaxExtent.Y ||
+		point.Z == cube.MinExtent.Z || point.Z == cube.MaxExtent.Z
+}
+
+// / Gets the bounding box for a set of 3d points
+func GetBoundingBox3d(points []Point3d) Cube {
+	bounds := Cube{Point3d{math.MaxInt, math.MaxInt, math.MaxInt}, Point3d{math.MinInt, math.MinInt, math.MinInt}}
+
+	for _, point := range points {
+		bounds.MinExtent.X = min(bounds.MinExtent.X, point.X)
+		bounds.MinExtent.Y = min(bounds.MinExtent.Y, point.Y)
+		bounds.MinExtent.Z = min(bounds.MinExtent.Z, point.Z)
+
+		bounds.MaxExtent.X = max(bounds.MaxExtent.X, point.X)
+		bounds.MaxExtent.Y = max(bounds.MaxExtent.Y, point.Y)
+		bounds.MaxExtent.Z = max(bounds.MaxExtent.Z, point.Z)
+	}
+
+	return bounds
 }
