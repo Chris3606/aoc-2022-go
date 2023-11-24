@@ -69,7 +69,7 @@ func PartB(path string) int {
 	//     - Otherwise, the flood fill stopped because we hit the edge of the mapped area,
 	//       so the space is not enclosed (there could be no blocking points beyond the bounds
 	//       of all known points)
-	enclosedPockets := 0
+	enclosedPocketFaces := 0
 	for x := bounds.MinExtent.X; x <= bounds.MaxExtent.X; x++ {
 		for y := bounds.MinExtent.Y; y <= bounds.MaxExtent.Y; y++ {
 			for z := bounds.MinExtent.Z; z <= bounds.MaxExtent.Z; z++ {
@@ -84,6 +84,7 @@ func PartB(path string) int {
 				// Flood fill from area
 				curArea := map[utils.Point3d]bool{}
 
+				facesHit := 0
 				hitBound := false
 				stack := []utils.Point3d{curPoint}
 				for len(stack) > 0 {
@@ -97,6 +98,7 @@ func PartB(path string) int {
 
 					// Hit a point originally in map; space may be enclosed and this is a boundary
 					if pointsSet[ffPoint] {
+						facesHit++
 						continue
 					}
 
@@ -127,12 +129,11 @@ func PartB(path string) int {
 				// Area is enclosed by squares in the map; so add its total to the total enclosed
 				// spaces
 				if !hitBound {
-					enclosedPockets += len(curArea)
+					enclosedPocketFaces += facesHit
 				}
 			}
 		}
 	}
 
-	// TODO: Have to determine the proper number to subtract here
-	return enclosedPockets
+	return countSidesVisible(pointsSet) - enclosedPocketFaces
 }
